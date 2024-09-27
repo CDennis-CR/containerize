@@ -1,0 +1,173 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: comic-n8n
+
+---
+apiVersion: v1
+data: # not setting SSL here - this can be done via mesh
+  DB_POSTGRESDB_PASSWORD: Y29taWNfcmVsaWVm # `echo -n comic_relief | base64`
+  DB_POSTGRESDB_USER: cG9zdGdyZXM= #"postgres" base64 encoded
+  N8N_ENCRYPTION_KEY:
+    |- # openssl genpkey --outform PEM --algorithm RSA --quiet | base64
+    LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZB
+    QVNDQktjd2dnU2pBZ0VBQW9JQkFRQ3F1MzNHWE9zY0VmNG8KVUY5K01Dd0J4bnJNckR1MW1lT2Rm
+    TnJhNzFHWE13U1JHbnlRRFRTZ0NOYjZRTVBwTGdGTU5sV0thYUV5OVZXcgo2MFAzaDJUNGlMSXhy
+    QXgxTEc1bkJjRzlaUHd4NXdCVVdQQWk4VmphTUF6d3Q0K2Q3LzNaT0M3Z3YrNFNPSEdyClA5Y2Ex
+    RTc2L2R3cm5hcVl0ODNVcm5JbW9jbkcwNUpiNUJkMmZ5bXR2T2U4WUtlNTQvZkE1aGpNOURHZDFT
+    SjYKZEtMK1cydEYwR2JIRmtkUm93bVRrRU16b3VORHlwVUZpbzVVT3BYZ2RVd3JuNC9sK3cxVUF3
+    cFFHUFNkeEVYWgpmbkUwMU16Zm80eUFFdmdvT2NteTROUWRjbEtMR1Q5WkRpNXlrTFVHNzdPK1Jo
+    VTRxazdaNEhUUHEyazN0d1ZuCjY3eHV5K0tYQWdNQkFBRUNnZ0VBTko2bGhJbmx3bGgvU3lCK1Zl
+    OTEyTFE1NjdQWGtVQlZLUmd1Z1pTSnduNXMKVldaaTVxalRROUdGcEVwcXR3YkJTcUppV2M3MWFq
+    VzN5azB2dk8zalBrQXZIMlVGeitVNlA1RkVKV0dtNHFCdAo5eEVVTGNqUm1DbUFDMzZmaWs5Sm52
+    V1VhUnR1UGZwY2VpbXFXNi84aVpuTkRqcEJObUZMMUZWUmhEdVA2ekdQCitWbWRNN2FBYVJINElJ
+    Nk9UdHRqQlhRSnNZQzlnVm1tYzN0RUEvSFlNMFd2ZThjQnR4dnVrOFNkdnY4VmxHdHAKV05NOWIy
+    U2M0T3d3citJRXhjQ3U4bllGOTB6OFFoaVo4OVBSSFZpMnBsN2JEWkt3cEw3MkhhamdxeHA2UjVP
+    LwpkMWVHNWxjb2N3aWZQdW9TQ0tIRXNRVEM0V2IveHdMT3J2anJMV2JNSFFLQmdRRFhQbjBoU2Q5
+    V0pQd2xxaSt0CndRcmZsN2ZqN2lqZnhOdlpSMUhyRFFlR1RobjNZZGh0NW5UeEVRQ2xwUy84RGRG
+    YUNEcC92bEt1TFhmYkdpT3oKTXMySXJSSDE3WmxLQ0ozQ0Z0M2lpRHBpSFRBakd6SWhsUDVJWERF
+    YXY3clJmM3ZNSVgzTzIxRFZVTE9kMy9ONApyaDBqcFFOa0NidDhZZHNZZlRnWGJSbGVyUUtCZ1FE
+    TEQyUEYvVG4rYXAxKzlmYXFCSmFVNktZbHBFYzZvSlB5CkN6d0Z5cFdkVzF2VWo3MEVIRHNGWlE4
+    d0FXZnpvYXFhUTg0NXRUZUhBRGdzTFR6YzdMTkVQVzNuQ2VaM1VoeXMKTEVISHcxeW1PZFJCbkZH
+    S2RHTnY1QnIyZGx3bVhmY2gyUFVaUG9xLzJsRTQ4MEFKd0pjbTVtUkxWUkdOeXBjMApGRFZlbU91
+    QzB3S0JnQkE4MXBPOFR1emd2V1RhQWQ3SndWZzh5ZEtZRk4xTXJJa25xRFpqTlQ0Y2hqanpXTEJ4
+    CndrQ3RWNjhuVndkY3czNVhRSktDZVJwS3M5QURtTTNiOTBWb1NRS1VlZ3ZydW5yNTNxTklRNTlE
+    Tkc1eGpzYVoKeHRVT24yVzFNUks4MjBuNi9OS3VHTnIreTQ0Tlp3Q2pvZThlYzdNSVNPeUpOVTRU
+    cERlZ00xbkJBb0dBYUwzVwpmRkVqY2YxeW9nT2pxWTFXVXhjeVpLWTVhNTlhMFBaRWpzUXhxb3B1
+    Y3RWMTdVSFdtL0RHQmNBajY4TFBhbVZoCllkajgvSEQ3aUtZSkIvZzhmQTJudkE0YVNDQWQxQjI4
+    REp2VUZaWXN5MjhqakdSK3lqK0NQUEZPbFNmUkN5K0wKTmV0UnpLYURVUG9BWlVkbmNGUlZGWnFh
+    eEdYazJxTTE2RWErN0tzQ2dZRUFsZGJyaDhYblo3WU1McHBTam1OVQo1Mk1RM1dvTXBxOEszdFV2
+    clUzRTVCcEVENDlKcEJsWE9wM2lnSVdDc01ybHJrNmZsOUZFckpsSVladGU2WmVoCnNZQjFpQWI1
+    VG4xSWdOWHhlalViL3pwRjRwMm44VHROUERLdVVSYnlicFFlQVIzUGtITWt5VlRDMENVRkxLN1cK
+    bjhJbFVxNk9DR1dyYmNQSENVQlV1djg9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+kind: Secret
+metadata:
+  name: n8n-secrets
+  namespace: comic-n8n
+type: Opaque
+---
+apiVersion: v1
+data:
+  N8N_DIAGNOSTICS_ENABLED: "false"
+  N8N_VERSION_NOTIFICATIONS_ENABLED: "false"
+  N8N_TEMPLATES_ENABLED: "false"
+  DB_TYPE: "postgresdb"
+  GENERIC_TIMEZONE: "Europe/London"
+  WORKFLOWS_DEFAULT_NAME: "CR_Workflow"
+  N8N_PORT: "5678"
+  N8N_PUSH_BACKEND: "sse"
+  N8N_HIRING_BANNER_ENABLED: "false"
+  DB_POSTGRESDB_DATABASE: "postgres"
+  DB_POSTGRESDB_HOST: "postgres-n8n.data-stores.svc.cluster.local" # possible because we ran: microk8s enable dns
+  DB_POSTGRESDB_PORT: "80"
+  DB_POSTGRESDB_POOL_SIZE: "2"
+  DB_POSTGRESDB_CONNECTION_TIMEOUT: "20000"
+  DB_POSTGRESDB_SCHEMA: "public"
+  DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED: "true"
+  N8N_SECURE_COOKIE: "false" # use only in local testing
+kind: ConfigMap
+metadata:
+  name: n8n-cm
+  namespace: comic-n8n
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: n8n
+  namespace: comic-n8n
+spec:
+  ports:
+    - name: exposed-port
+      port: 80
+      protocol: TCP
+      targetPort: main-port
+  selector:
+    comicrelief.com/part-of: n8n
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: n8n-pvc
+  namespace: comic-n8n
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: longhorn
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+  namespace: comic-n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      comicrelief.com/part-of: n8n
+  template:
+    metadata:
+      labels:
+        comicrelief.com/part-of: n8n
+    spec:
+      containers:
+        - envFrom:
+            - secretRef:
+                name: n8n-secrets
+                optional: false
+            - configMapRef:
+                name: n8n-cm
+                optional: false
+          image: docker.n8n.io/n8nio/n8n
+          imagePullPolicy: Always
+          name: n8n
+          ports:
+            - containerPort: 5678
+              name: main-port
+          volumeMounts:
+            - mountPath: "/home/node/.n8n"
+              name: n8n-pvc
+              readOnly: false
+              subPathExpr: "n8n"
+          resources:
+            requests:
+              memory: "250Mi"
+            limits:
+              memory: "500Mi"
+      restartPolicy: Always
+      volumes:
+        - name: n8n-pvc
+          persistentVolumeClaim:
+            claimName: n8n-pvc
+            readOnly: false
+      securityContext:
+        fsGroup: 1000 # n8n container runs as non root `node` user so run as node user (1000) to access volume
+
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata: # add Kong plugin features via annotations: https://docs.konghq.com/kubernetes-ingress-controller/latest/plugins/mtls/
+  name: comic-n8n-http-route
+  namespace: comic-n8n
+spec:
+  parentRefs:
+    - name: kong-gateway
+      namespace: kong-system
+  rules:
+    - backendRefs: # https://gateway-api.sigs.k8s.io/api-types/httproute/#backendrefs-optional
+        - group: ""
+          kind: Service
+          name: n8n
+          port: 80
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /

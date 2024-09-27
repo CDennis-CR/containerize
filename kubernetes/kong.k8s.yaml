@@ -1,0 +1,62 @@
+---
+#https://github.com/Kong/gateway-operator - for dataPlane vs controlPlane explanations
+#Kong controls ingress controllers using Gateway API manifest CRDs
+kind: GatewayConfiguration
+apiVersion: gateway-operator.konghq.com/v1beta1
+metadata:
+  name: kong-main
+  namespace: kong-system
+spec:
+  dataPlaneOptions:
+    deployment:
+      podTemplateSpec:
+        spec:
+          containers:
+            - name: proxy
+              image: kong:3.7.1
+              readinessProbe:
+                initialDelaySeconds: 1
+                periodSeconds: 1
+  controlPlaneOptions:
+    deployment:
+      podTemplateSpec:
+        spec:
+          containers:
+            - name: controller
+              image: kong/kubernetes-ingress-controller:3.2.0
+              env:
+                - name: CONTROLLER_LOG_LEVEL
+                  value: error #https://docs.konghq.com/gateway/latest/production/logging/log-reference/
+
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: GatewayClass
+metadata:
+  name: kong-gateway-class
+  namespace: kong-system
+spec:
+  controllerName: konghq.com/gateway-operator
+  parametersRef:
+    group: gateway-operator.konghq.com
+    kind: GatewayConfiguration
+    name: kong-main
+    namespace: kong-system
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: kong-gateway
+  namespace: kong-system
+spec:
+  gatewayClassName: kong-gateway-class
+  listeners:
+    - allowedRoutes:
+        namespaces:
+          from: All
+      name: http
+      port: 80
+      protocol: HTTP #Assumes between Lightsail VM and Lightsail LB traffic is unencrypted - otherwise use HTTPS here and add tls secrets for TLS
+
+# if SSL is required you can gen the cert and key object using:
+# kubectl create secret tls debug -n kong-system --dry-run=client --cert=creds/cloudflare.crt --key=creds/cloudflare.key -o yaml
+# then refer to that object under listener[0].tls
