@@ -27,6 +27,16 @@
 #################################################
 . "$PWD/keygen.sh"
 
+###############################################################################
+# Convenience - Update n8n.k8s.yaml with generated encryption key if required #
+###############################################################################
+snap install yq
+# replace the existing encryption key in the YAML manifest with the one generated in `. "$PWD/keygen.sh"`
+# This should be available to see in credentials/encryption.key file
+#
+# Note that this references the secrets object manifest by document index within the file.
+yq --inplace '(select(document_index == 1) | .data.N8N_ENCRYPTION_KEY) = (load_str("credentials/encryption.key") | @base64)' n8n.k8s.yaml
+
 ##############################
 # Setup microk8s environment #
 ##############################
